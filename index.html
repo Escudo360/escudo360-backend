@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Escudo 360 · Tienda de seguridad electrónica en Tlaxcala</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<style>
+:root{--bg:#EEF2F6;--sf:#fff;--tx:#0F1E2E;--mu:#5A6B7C;--ln:#D3DCE5;--nv:#0B2540;--nv2:#143A63;--am:#2A6AD6;--amt:#fff;--gr:#12805C;--rd:#C73A2E;
+--hf:'Montserrat',system-ui,sans-serif;--bf:'Source Sans 3',system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1119;--sf:#121D2A;--tx:#E8EEF4;--mu:#9AABBB;--ln:#233446;--nv:#07182B;--nv2:#1B4A7A;--gr:#3CC89A;--rd:#F0766B}}
+:root[data-theme="dark"]{--bg:#0A1119;--sf:#121D2A;--tx:#E8EEF4;--mu:#9AABBB;--ln:#233446;--nv:#07182B;--nv2:#1B4A7A;--gr:#3CC89A;--rd:#F0766B}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.5 var(--bf)}
+h1,h2,h3{font-family:var(--hf);margin:0;line-height:1.15}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--am);outline-offset:2px}
+.w{max-width:1180px;margin:0 auto;padding:0 16px}
+header{background:var(--nv);color:#fff;position:sticky;top:0;z-index:20}
+.top{display:flex;align-items:center;gap:16px;padding:12px 0;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;font:800 22px var(--hf);cursor:pointer;background:none;border:0;color:#fff}
+.logo small{color:#8DB8F2}
+.sr{flex:1;min-width:200px;display:flex}
+.sr input{flex:1;border:0;border-radius:8px 0 0 8px;padding:10px 14px;background:#fff;color:#0F1E2E}
+.sr button{border:0;background:var(--am);color:var(--amt);font-weight:600;padding:0 16px;border-radius:0 8px 8px 0}
+
+/* Control visual limpio para alternar sesión */
+.auth-box{display:flex;align-items:center;gap:8px}
+.user-badge{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);padding:5px 12px;border-radius:8px;font-size:14px;display:flex;align-items:center;gap:8px;color:#fff;font-weight:600}
+.cartb{background:transparent;border:1.5px solid #fff5;color:#fff;border-radius:8px;padding:9px 14px;font-weight:600}
+.cartb b{background:#fff;color:var(--nv);border-radius:99px;padding:1px 8px;margin-left:6px}
+
+/* Clase de utilidad estricta para ocultar */
+.oculto { display: none !important; }
+
+nav{background:var(--nv2)}
+nav .w{display:flex;gap:4px;overflow-x:auto}
+nav button{background:none;border:0;color:#fff;padding:11px 14px;white-space:nowrap;font-weight:500;border-bottom:3px solid transparent}
+nav button.on,nav button:hover{border-bottom-color:#fff}
+.hero{background:var(--nv);color:#fff;overflow:hidden;position:relative}
+.hero .w{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;padding-top:44px;padding-bottom:44px}
+.hero h1{font-size:clamp(28px,4.4vw,50px);font-weight:800;letter-spacing:-.02em}
+.hero p{color:#C5D3E2;max-width:52ch;font-size:17px}
+.pill{display:inline-block;background:var(--am);color:var(--amt);font-weight:700;border-radius:6px;padding:3px 10px;font-size:13px}
+.btn{border:0;border-radius:8px;padding:12px 20px;font-weight:600;background:var(--am);color:var(--amt)}
+.btn:hover{filter:brightness(1.07)}
+.btn.s{background:transparent;color:inherit;border:1.5px solid currentColor}
+.btn.d{background:var(--nv2);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hero .btn:not(.s),.hero .pill{background:#fff;color:var(--nv)}
+section{padding:36px 0}
+.sh{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+.sh h2{font-size:26px}
+.sh span{color:var(--mu)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:16px}
+.row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.row .card{min-width:235px;scroll-snap-align:start}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.card .im{background:linear-gradient(160deg,#DCE6F0,#C3D2E2);aspect-ratio:4/3;display:grid;place-items:center;cursor:pointer;border:0;width:100%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .card .im{background:linear-gradient(160deg,#1C2E42,#14202E)}}
+.card .bd{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font-size:15px;font-weight:700;cursor:pointer}
+.tag{position:absolute;top:10px;left:10px;background:var(--rd);color:#fff;font-weight:700;font-size:13px;padding:3px 9px;border-radius:6px}
+.stk{font-size:13px;color:var(--gr);font-weight:600}
+.stk.lo{color:var(--rd)}
+.pr{display:flex;align-items:baseline;gap:8px;margin-top:auto}
+.pr b{font:800 21px var(--hf)}
+.pr s{color:var(--mu);font-size:14px}
+.deal{border:2px solid var(--am)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1.5px solid var(--ln);background:var(--sf);border-radius:99px;padding:6px 14px}
+.chip.on{background:var(--nv);color:#fff;border-color:var(--nv)}
+.band{background:var(--sf);border-block:1px solid var(--ln)}
+.mu{color:var(--mu)}
+/* modal */
+.ov{position:fixed;inset:0;background:#000a;z-index:40;display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 12px}
+.ov.on{display:flex}
+.md{background:var(--sf);border-radius:14px;max-width:820px;width:100%;padding:22px;position:relative}
+.x{position:absolute;right:12px;top:10px;background:none;border:0;font-size:26px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+table{width:100%;border-collapse:collapse;margin:10px 0}
+td{padding:8px 0;border-bottom:1px solid var(--ln)}
+td:first-child{color:var(--mu);width:45%}
+.chk{display:flex;gap:10px;align-items:center;border:1.5px dashed var(--nv2);border-radius:10px;padding:10px 12px;margin:12px 0;cursor:pointer}
+/* cart */
+.cl{display:grid;grid-template-columns:2fr 1fr;gap:22px;align-items:start}
+.box{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:18px}
+.it{display:grid;grid-template-columns:84px 1fr auto;gap:14px;padding:14px 0;border-bottom:1px solid var(--ln);align-items:center}
+.it .th{background:#DCE6F0;border-radius:8px;display:grid;place-items:center;aspect-ratio:1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .it .th{background:#1C2E42}}
+.qty{display:inline-flex;border:1.5px solid var(--ln);border-radius:8px;overflow:hidden}
+.qty button{background:none;border:0;width:34px;font-size:18px}
+.qty span{min-width:34px;text-align:center;line-height:34px}
+.lk{background:none;border:0;color:var(--rd);text-decoration:underline;padding:0}
+.tot div{display:flex;justify-content:space-between;padding:6px 0}
+.tot .g{border-top:2px solid var(--tx);margin-top:8px;padding-top:12px;font:800 26px var(--hf)}
+select,input,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--ln);border-radius:8px;background:var(--bg)}
+label{font-size:13px;font-weight:600;display:block;margin:10px 0 4px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.steps{display:flex;gap:6px;margin-bottom:18px}
+.st{flex:1;padding:10px;border-radius:8px;background:var(--bg);border:1.5px solid var(--ln);text-align:center;font-weight:600;color:var(--mu)}
+.st.on{background:var(--nv);color:#fff;border-color:var(--nv)}
+.st.ok{color:var(--gr);border-color:var(--gr)}
+.opt{display:flex;gap:10px;align-items:center;border:1.5px solid var(--ln);border-radius:10px;padding:12px;margin:8px 0;cursor:pointer}
+.opt:has(input:checked){border-color:var(--am);background:color-mix(in srgb,var(--am) 12%,transparent)}
+.opt input{width:auto}
+.pm{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.cc{display:flex;gap:8px;margin:6px 0}
+.cc i{font:italic 800 13px var(--hf);border-radius:5px;padding:3px 9px;color:#fff;font-style:normal}
+.ok-i{width:64px;height:64px;border-radius:50%;background:var(--gr);color:#fff;display:grid;place-items:center;font-size:34px;margin:0 auto 12px}
+/* faq */
+details{background:var(--sf);border:1px solid var(--ln);border-radius:10px;margin-bottom:8px;padding:14px 16px}
+summary{font-weight:600;cursor:pointer}
+details p{margin:10px 0 0;color:var(--mu)}
+footer{background:var(--nv);color:#C5D3E2;padding:28px 0 90px;font-size:14px}
+.wa{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;gap:10px}
+.wa span{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:8px 12px;font-size:13px;max-width:190px;box-shadow:0 4px 14px #0003}
+.wa a{width:60px;height:60px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 4px 14px #0005}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--nv);color:#fff;padding:10px 18px;border-radius:8px;z-index:50;display:none}
+@media(max-width:760px){.hero .w,.two,.cl,.f2{grid-template-columns:1fr}.hero svg{max-width:220px;margin:auto}.wa span{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+ <div class="w top">
+  <button class="logo" onclick="go('home')" aria-label="Escudo 360, inicio">
+   <svg width="34" height="38" viewBox="0 0 34 38"><path d="M17 2 31 7v11c0 9-6 15-14 18C9 33 3 27 3 18V7z" fill="#fff"/><circle cx="17" cy="19" r="7" fill="none" stroke="#0B2540" stroke-width="2.5"/><circle cx="17" cy="19" r="2.6" fill="#0B2540"/></svg>
+   Escudo <small>360</small></button>
+  <form class="sr" onsubmit="event.preventDefault();doSearch()"><input id="q" placeholder="Buscar cámaras, kits, DVR, cerraduras…" aria-label="Buscar productos"><button>Buscar</button></form>
+  
+  <!-- Control de Sesión -->
+  <div class="auth-box">
+      <div id="user-info" class="user-badge oculto">
+          <i class="bi bi-person-fill text-warning"></i>
+          <span>Hola, <strong id="lbl-username"></strong></span>
+          <button class="btn s" style="padding:4px 10px;font-size:12px;border-color:rgba(255,255,255,0.6);color:#fff;" onclick="logout()">Salir</button>
+      </div>
+      <button id="btn-open-login" class="cartb" onclick="openLoginModal()">Iniciar Sesión</button>
+  </div>
+
+  <!-- Botón del Carrito de Ventas (Abre directamente la compra/checkout) -->
+  <button class="cartb" id="btn-cart" type="button" onclick="openCart()" aria-controls="cart" aria-label="Abrir carrito de compras">Carrito <b id="cn" aria-live="polite">0</b></button>
+ </div>
+ <nav><div class="w" id="nav"></div></nav>
+</header>
+
+<main id="home">
+ <div class="hero"><div class="w">
+  <div>
+   <span class="pill">15 % de descuento</span>
+   <h1 style="margin:14px 0">Protege tu hogar y negocio en Tlaxcala</h1>
+   <p>15 % de descuento en Kits de Videovigilancia HD con instalación incluida. Equipos respaldados por SYSCOM y técnicos en tu municipio.</p>
+   <p style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" onclick="filt(0);scrollToId('cat')">Ver kits con descuento</button><button class="btn s" onclick="scrollToId('contacto')">Pedir cotización</button></p>
+  </div>
+  <svg viewBox="0 0 240 240" role="img" aria-label="Lente de cámara dentro de un escudo"><path d="M120 8 216 40v76c0 62-42 102-96 120C66 218 24 178 24 116V40z" fill="#143A63" stroke="#fff" stroke-width="4"/><circle cx="120" cy="116" r="62" fill="#0B2540" stroke="#4C7DAF" stroke-width="3"/><circle cx="120" cy="116" r="40" fill="none" stroke="#4C7DAF" stroke-width="2"/><circle cx="120" cy="116" r="20" fill="#BFD6F6"/><circle cx="110" cy="106" r="6" fill="#fff" opacity=".8"/></svg>
+ </div></div>
+
+ <section class="band"><div class="w">
+  <div class="sh"><h2>Ofertas por tiempo limitado</h2><span id="cd"></span></div>
+  <div class="grid" id="deals"></div>
+ </div></section>
+
+ <section id="cat"><div class="w">
+  <div class="sh"><h2>Catálogo</h2><span id="cc"></span></div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+ </div></section>
+
+ <section class="band"><div class="w">
+  <div class="sh"><h2>Más vendidos</h2><span>Respaldados por SYSCOM</span></div>
+  <div class="row" id="best"></div>
+ </div></section>
+
+ <section id="contacto"><div class="w two">
+  <div>
+   <h2 style="margin-bottom:8px">Cuéntanos tu proyecto</h2>
+   <p class="mu">Te respondemos en menos de 24 horas con una propuesta para tu casa, negocio o bodega.</p>
+   <form class="box" onsubmit="event.preventDefault();toast('Mensaje enviado. Te contactaremos pronto.');this.reset()">
+    <label>Nombre</label><input required autocomplete="name">
+    <div class="f2"><div><label>Correo</label><input type="email" required></div><div><label>Teléfono</label><input type="tel" required></div></div>
+    <label>Mensaje</label><textarea rows="4" required placeholder="Ej. Necesito 6 cámaras para mi tienda en Apizaco"></textarea>
+    <p><button class="btn">Enviar consulta</button></p>
+   </form>
+  </div>
+  <div>
+   <h2 style="margin-bottom:14px">Preguntas frecuentes</h2>
+   <details open><summary>¿Qué garantía tienen los equipos?</summary><p>Los equipos tienen garantía de fábrica de 1 a 3 años según la marca. La instalación incluye 6 meses de garantía en mano de obra.</p></details>
+   <details><summary>¿Cuánto tarda la entrega en Tlaxcala?</summary><p>De 1 a 3 días hábiles según el municipio. Si pides instalación, agendamos la visita al confirmar tu pedido.</p></details>
+   <details><summary>¿Tienen soporte técnico local?</summary><p>Sí. Atendemos por teléfono y WhatsApp, y enviamos un técnico a domicilio en los municipios con cobertura.</p></details>
+   <details><summary>¿Emiten factura?</summary><p>Sí. Escríbenos tus datos fiscales después de pagar y recibirás tu CFDI por correo.</p></details>
+  </div>
+ </div></section>
+</main>
+
+<!-- Vista de Carrito y Pasarela de Compra -->
+<main id="cart" hidden><div class="w" style="padding-top:28px;padding-bottom:40px" id="cartv"></div></main>
+
+<footer><div class="w">Escudo 360 · Seguridad electrónica en Tlaxcala · Distribuidor autorizado SYSCOM · Catálogo demostrativo: los pedidos requieren backend y pasarela de pago para operar en producción.</div></footer>
+
+<div class="wa"><span>¿Dudas con tu instalación? Chatea con un asesor</span><a href="#" onclick="event.preventDefault();toast('Abriendo WhatsApp…')" aria-label="Chatear por WhatsApp"><svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.2 13.6c-.2.6-1.3 1.1-1.8 1.2-.5.1-1 .1-3.3-.8-2.7-1.2-4.4-3.9-4.6-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.300 1.700 2.100 1.100 1 2 1.300 2.300 1.400.3.100.4.1.6-.1l.8-1c.2-.2.400-.2.600-.1l1.900.9c.2.1.4.2.5.3.1.2.1.8-.1 1.400z"/></svg></a></div>
+<div class="toast" id="toast"></div>
+<div class="ov" id="ov" onclick="if(event.target===this)closeM()"><div class="md" id="md" role="dialog" aria-modal="true"></div></div>
+
+<script>
+const CATS=['Kits Residenciales','Cámaras IP','DVR/NVR','Control de Acceso'];
+const P=[
+{id:1,n:'Kit de Videovigilancia 4 Cámaras 1080p',c:0,t:'kit',l:4999,d:15,s:14,r:'1080p Full HD',a:'Disco duro hasta 4 TB',v:'20 m IR',h:1,b:1},
+{id:2,n:'Kit de Videovigilancia 8 Cámaras 2 MP',c:0,t:'kit',l:8490,d:15,s:6,r:'2 MP (1080p)',a:'Disco duro hasta 6 TB',v:'30 m IR',b:1},
+{id:3,n:'Kit Residencial 2 Cámaras Exterior',c:0,t:'kit',l:2890,d:15,s:3,r:'1080p Full HD',a:'Disco duro hasta 2 TB',v:'20 m IR',h:1},
+{id:4,n:'Cámara IP Bullet 4 MP PoE',c:1,t:'bul',l:1850,d:10,s:22,r:'4 MP (2560×1440)',a:'MicroSD hasta 256 GB',v:'40 m IR, color nocturno',b:1},
+{id:5,n:'Cámara IP Domo 2 MP Antivandálica',c:1,t:'dom',l:1390,d:0,s:18,r:'2 MP (1080p)',a:'MicroSD hasta 128 GB',v:'30 m IR'},
+{id:6,n:'Cámara PTZ 4 MP Zoom 25x',c:1,t:'dom',l:9800,d:12,s:2,r:'4 MP',a:'MicroSD hasta 256 GB',v:'150 m IR',h:1},
+{id:7,n:'DVR 8 Canales 5 en 1 1080p',c:2,t:'dvr',l:2150,d:0,s:9,r:'Hasta 1080p',a:'1 disco hasta 10 TB',v:'Según cámara'},
+{id:8,n:'NVR 16 Canales PoE 4K',c:2,t:'dvr',l:6450,d:15,s:5,r:'Hasta 8 MP / 4K',a:'2 discos hasta 20 TB',v:'Según cámara',b:1},
+{id:9,n:'Control de Acceso Biométrico Huella + Tarjeta',c:3,t:'acc',l:3290,d:10,s:11,r:'3,000 huellas',a:'Memoria interna 100,000 eventos',v:'No aplica',b:1},
+{id:10,n:'Lector RFID Autónomo con Teclado',c:3,t:'acc',l:1190,d:0,s:25,r:'2,000 usuarios',a:'Memoria interna',v:'No aplica'}];
+const REG={'Tlaxcala (capital)':99,'Chiautempan':109,'Zacatelco':119,'Apizaco':129,'Huamantla':149,'Calpulalpan':189,'Tlaxco':199};
+const INST=850, IVA=.16, fmt=n=>'$'+n.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pr=p=>Math.round(p.l*(1-p.d/100));
+const CART_KEY='escudo360_cart_v1';
+const ORDER_KEY='escudo360_orders_v1';
+function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
+let cart=readJSON(CART_KEY,{}),reg='Tlaxcala (capital)',cat=-1,term='',step=0,expr=false,pay='delivery',addr=readJSON('escudo360_address_v1',{});
+let currentUser = null;
+function saveCart(){localStorage.setItem(CART_KEY,JSON.stringify(cart));}
+function saveAddress(){localStorage.setItem('escudo360_address_v1',JSON.stringify(addr));}
+
+const $=id=>document.getElementById(id);
+function art(t,w=120){const g={
+kit:'<rect x="20" y="52" width="48" height="30" rx="4" fill="#0B2540"/><circle cx="44" cy="67" r="9" fill="#4C7DAF"/><rect x="74" y="44" width="46" height="36" rx="4" fill="#143A63"/><circle cx="97" cy="62" r="10" fill="#F5A800"/><rect x="40" y="88" width="62" height="10" rx="3" fill="#0B2540"/><circle cx="52" cy="93" r="2" fill="#12805C"/>',
+bul:'<rect x="24" y="48" width="70" height="26" rx="13" fill="#0B2540"/><circle cx="86" cy="61" r="9" fill="#F5A800"/><circle cx="86" cy="61" r="4" fill="#0B2540"/><rect x="38" y="74" width="8" height="18" fill="#4C7DAF"/>',
+dom:'<ellipse cx="60" cy="82" rx="38" ry="8" fill="#4C7DAF"/><path d="M26 80a34 34 0 0 1 68 0z" fill="#0B2540"/><circle cx="60" cy="66" r="11" fill="#F5A800"/><circle cx="60" cy="66" r="5" fill="#0B2540"/>',
+dvr:'<rect x="14" y="52" width="92" height="32" rx="5" fill="#0B2540"/><rect x="22" y="62" width="40" height="5" rx="2" fill="#4C7DAF"/><circle cx="84" cy="68" r="4" fill="#12805C"/><circle cx="96" cy="68" r="4" fill="#F5A800"/>',
+acc:'<rect x="38" y="26" width="44" height="72" rx="8" fill="#0B2540"/><rect x="46" y="34" width="28" height="14" rx="3" fill="#4C7DAF"/><circle cx="60" cy="70" r="14" fill="none" stroke="#F5A800" stroke-width="3"/><circle cx="60" cy="70" r="6" fill="none" stroke="#F5A800" stroke-width="2"/>'}[t];
+return `<svg width="${w}" viewBox="0 0 120 120" aria-hidden="true">${g.replace(/#F5A800/g,'#6FA3E8')}</svg>`}
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._);t._=setTimeout(()=>t.style.display='none',2200)}
+function scrollToId(id){go('home');setTimeout(()=>$(id).scrollIntoView(),30)}
+function go(v){
+  const showCart = v === 'cart';
+  $('home').hidden = showCart;
+  $('cart').hidden = !showCart;
+  if(showCart) rCart();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function openCart(){
+  // El botón superior siempre abre la primera pantalla del carrito.
+  step = 0;
+  go('cart');
+}
+function card(p,deal){const hi=cart[p.id];return `<article class="card ${deal?'deal':''}">${p.d?`<span class="tag">−${p.d} %</span>`:''}
+<button class="im" onclick="detail(${p.id})" aria-label="Ver ficha de ${p.n}">${art(p.t)}</button>
+<div class="bd"><h3 onclick="detail(${p.id})">${p.n}</h3>
+<span class="stk ${p.s<5?'lo':''}">${p.s<5?'Últimas '+p.s+' piezas':'Disponible en almacén'}</span>
+<div class="pr"><b>${fmt(pr(p))}</b>${p.d?`<s>${fmt(p.l)}</s>`:''}</div>
+<button class="btn" onclick="add(${p.id})">Agregar al carrito</button></div></article>`}
+function rHome(){
+ $('nav').innerHTML=`<button class="${cat<0?'on':''}" onclick="filt(-1)">Todo</button>`+CATS.map((c,i)=>`<button class="${cat===i?'on':''}" onclick="filt(${i});scrollToId('cat')">${c}</button>`).join('');
+ $('chips').innerHTML=['Todo',...CATS].map((c,i)=>`<button class="chip ${cat===i-1?'on':''}" onclick="filt(${i-1})">${c}</button>`).join('');
+ const L=P.filter(p=>(cat<0||p.c===cat)&&p.n.toLowerCase().includes(term));
+ $('grid').innerHTML=L.length?L.map(p=>card(p)).join(''):'<p class="mu">No encontramos productos con esa búsqueda. Prueba con “cámara” o “kit”.</p>';
+ $('cc').textContent=L.length+' productos';
+ $('deals').innerHTML=P.filter(p=>p.d>=12).slice(0,4).map(p=>card(p,1)).join('');
+ $('best').innerHTML=P.filter(p=>p.b).map(p=>card(p)).join('');
+ $('cn').textContent=Object.values(cart).reduce((a,x)=>a+x.q,0)}
+function filt(c){cat=c;term='';$('q').value='';rHome()}
+function doSearch(){term=$('q').value.trim().toLowerCase();cat=-1;rHome();scrollToId('cat')}
+function add(id,inst){const p=P.find(x=>x.id===id);cart[id]=cart[id]||{q:0,i:false};if(cart[id].q>=p.s){toast('No hay más piezas disponibles');return}cart[id].q++;if(inst)cart[id].i=true;saveCart();rHome();toast('Agregado al carrito');closeM()}
+function detail(id){const p=P.find(x=>x.id===id);
+ $('md').innerHTML=`<button class="x" onclick="closeM()" aria-label="Cerrar">×</button><div class="two"><div class="card" style="border-radius:12px"><div class="im" style="cursor:default">${art(p.t,200)}</div></div>
+<div><span class="mu">${CATS[p.c]}</span><h2 style="margin:4px 0 10px">${p.n}</h2><span class="stk">Disponible en almacén (${p.s})</span>
+<div class="pr" style="margin:8px 0"><b style="font-size:28px">${fmt(pr(p))}</b>${p.d?`<s>${fmt(p.l)}</s><span class="pill">−${p.d} %</span>`:''}</div>
+<table><caption style="text-align:left;font-weight:700;padding-bottom:4px">Ficha técnica</caption><tr><td>Resolución</td><td>${p.r}</td></tr><tr><td>Almacenamiento compatible</td><td>${p.a}</td></tr><tr><td>Visión nocturna</td><td>${p.v}</td></tr><tr><td>Respaldo</td><td>Mayorista SYSCOM</td></tr></table>
+<label class="chk"><input type="checkbox" id="ins" style="width:auto"><span>Agregar instalación técnica in situ <b>+${fmt(INST)}</b><br><small class="mu">Un técnico lo instala y configura en tu domicilio.</small></span></label>
+<button class="btn" style="width:100%" onclick="add(${p.id},$('ins').checked)">Agregar al carrito</button></div></div>`;
+ $('ov').classList.add('on')}
+function closeM(){$('ov').classList.remove('on')}
+function calc(){let sub=0,ins=0,n=0;for(const id in cart){const p=P.find(x=>x.id==id),c=cart[id];sub+=pr(p)*c.q;if(c.i)ins+=INST*c.q;n+=c.q}
+ const env=n?REG[reg]+(expr?80:0):0,iva=(sub+ins+env)*IVA;return{sub,ins,env,iva,tot:sub+ins+env+iva,n}}
+function totals(){const t=calc();return `<div class="box"><h3 style="margin-bottom:10px">Resumen</h3>
+<label for="rg">Municipio de entrega</label><select id="rg" onchange="reg=this.value;rCart()">${Object.keys(REG).map(r=>`<option ${r===reg?'selected':''}>${r}</option>`).join('')}</select>
+<div class="tot" style="margin-top:12px"><div><span>Subtotal de productos</span><span>${fmt(t.sub)}</span></div>${t.ins?`<div><span>Instalación técnica</span><span>${fmt(t.ins)}</span></div>`:''}<div><span>Envío a ${reg}</span><span>${fmt(t.env)}</span></div><div><span>IVA (16 %)</span><span>${fmt(t.iva)}</span></div><div class="g"><span>Total</span><span>${fmt(t.tot)}</span></div></div>
+<p class="mu" style="font-size:12px;margin-bottom:0">Los precios mostrados no incluyen IVA.</p></div>`}
+
+function rCart(){
+ const ids=Object.keys(cart).filter(id=>P.some(p=>p.id===Number(id)) && cart[id] && cart[id].q>0);
+ const v=$('cartv');
+ $('cn').textContent=ids.reduce((sum,id)=>sum+cart[id].q,0);
+ if(step===5)return conf(v);
+ if(!ids.length){
+  step=0;
+  v.innerHTML=`<div class="box" style="max-width:650px;margin:24px auto;text-align:center">
+    <div style="font-size:48px;margin-bottom:8px" aria-hidden="true">🛒</div>
+    <h2>Tu carrito está vacío</h2>
+    <p class="mu">Todavía no agregas productos. Explora el catálogo y selecciona lo que necesitas.</p>
+    <button class="btn" type="button" onclick="go('home')">Ver catálogo</button>
+  </div>`;
+  return;
+ }
+ const S=['Carrito','Dirección','Envío','Pago'];
+ v.innerHTML=`<div class="steps">${S.map((s,i)=>`<div class="st ${i===step?'on':i<step?'ok':''}">${i<step?'✓ ':''}${s}</div>`).join('')}</div><div class="cl"><div class="box" id="main"></div><div>${totals()}</div></div>`;
+ const m=$('main');
+ if(step===0)m.innerHTML=ids.map(id=>{const p=P.find(x=>x.id==id),c=cart[id];if(!p)return '';return `<div class="it"><div class="th">${art(p.t,64)}</div><div><b>${p.n}</b><br><span class="mu">${fmt(pr(p))} c/u</span><br>
+<label style="display:inline-flex;gap:6px;align-items:center;font-weight:400;margin:6px 0 0"><input type="checkbox" style="width:auto" ${c.i?'checked':''} onchange="cart[${id}].i=this.checked;saveCart();rCart()">Instalación in situ (+${fmt(INST)})</label></div>
+<div style="text-align:right"><div class="qty"><button onclick="qty(${id},-1)" aria-label="Quitar uno">−</button><span>${c.q}</span><button onclick="qty(${id},1)" aria-label="Agregar uno">+</button></div><div style="margin:8px 0"><b>${fmt(pr(p)*c.q)}</b></div><button class="lk" onclick="del(${id})">Eliminar</button></div></div>`}).join('')+`<p style="text-align:right"><button class="btn" onclick="step=1;rCart()">Continuar con la dirección</button></p>`;
+ if(step===1)m.innerHTML=`<h3>Dirección de entrega</h3><form onsubmit="event.preventDefault();collectAddress();step=2;rCart()"><label>Nombre completo</label><input id="a-name" required autocomplete="name" value="${safe(addr.n||(currentUser?currentUser.name:''))}"><div class="f2"><div><label>Calle y número</label><input id="a-street" required autocomplete="street-address" value="${safe(addr.c||'')}"></div><div><label>Colonia</label><input id="a-neighborhood" required value="${safe(addr.col||'')}"></div></div><div class="f2"><div><label>Municipio</label><input value="${safe(reg)}" readonly></div><div><label>Código postal</label><input id="a-zip" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="90000" value="${safe(addr.zip||'')}"></div></div><label>Teléfono</label><input id="a-phone" type="tel" required autocomplete="tel" pattern="[0-9 +()-]{10,18}" value="${safe(addr.phone||'')}"><label>Correo electrónico</label><input id="a-email" type="email" required autocomplete="email" value="${safe(addr.email||'')}"><p><button type="button" class="btn s" onclick="step=0;rCart()">Volver</button> <button class="btn">Continuar al envío</button></p></form>`;
+ if(step===2)m.innerHTML=`<h3>Método de envío</h3><label class="opt"><input type="radio" name="e" ${!expr?'checked':''} onchange="expr=false;rCart()"><span><b>Estándar</b> · 1 a 3 días hábiles<br><small class="mu">Tarifa según municipio</small></span></label><label class="opt"><input type="radio" name="e" ${expr?'checked':''} onchange="expr=true;rCart()"><span><b>Express</b> · siguiente día hábil <b>+$80.00</b></span></label><p><button class="btn s" onclick="step=1;rCart()">Volver</button> <button class="btn" onclick="step=3;rCart()">Continuar al pago</button></p>`;
+ if(step===3)payv(m,S);
+}
+function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function collectAddress(){addr={n:$('a-name').value.trim(),c:$('a-street').value.trim(),col:$('a-neighborhood').value.trim(),zip:$('a-zip').value.trim(),phone:$('a-phone').value.trim(),email:$('a-email').value.trim()};saveAddress();}
+function payv(m,S){
+ document.querySelectorAll('.st').forEach((e,i)=>{e.className='st '+(i<3?'ok':'on');e.textContent=i<3?'✓ '+S[i]:S[i]});
+ const methods=[['delivery','Pago al recibir'],['transfer','Transferencia bancaria']];
+ m.innerHTML=`<h3>Forma de pago preferida</h3><p class="mu">Elige cómo te gustaría pagar. El pedido quedará pendiente de confirmación; esta página todavía no procesa cobros.</p><div class="pm">${methods.map(([k,l])=>`<button class="chip ${pay===k?'on':''}" onclick="pay='${k}';payv($('main'),${JSON.stringify(S).replace(/"/g,"'")})">${l}</button>`).join('')}</div><div class="box" style="background:var(--bg);margin-top:12px"><b>${pay==='delivery'?'Pago al recibir':'Transferencia bancaria'}</b><p class="mu">${pay==='delivery'?'El asesor confirmará disponibilidad, costo final y forma de pago al recibir.':'Un asesor te compartirá los datos bancarios oficiales después de revisar tu pedido. No transfieras a cuentas mostradas fuera de los canales oficiales.'}</p></div><p style="margin-top:16px"><button class="btn s" onclick="step=2;rCart()">Volver</button> <button class="btn" onclick="confirmar()">Enviar solicitud de pedido</button></p>`;
+}
+function qty(id,d){const p=P.find(x=>x.id===id);if(!p)return;const next=(cart[id]?.q||0)+d;if(next<=0)delete cart[id];else if(next>p.s){toast('Stock máximo disponible: '+p.s);return}else cart[id].q=next;saveCart();rHome();rCart()}
+function del(id){delete cart[id];saveCart();rHome();rCart()}
+async function confirmar(){
+ if(!Object.keys(cart).length){toast('Tu carrito está vacío');return}
+ if(!addr.n||!addr.c||!addr.col||!addr.zip||!addr.phone||!addr.email){step=1;rCart();toast('Completa tus datos de entrega');return}
+ const t=calc();
+ const order={reference:'ESC-'+Date.now().toString().slice(-8),status:'pendiente_de_confirmacion',createdAt:new Date().toISOString(),customer:addr,municipality:reg,shipping:expr?'express':'standard',payment:pay,totals:t,items:Object.keys(cart).map(id=>{const p=P.find(x=>x.id==id);return {productId:p.id,name:p.n,unitPrice:pr(p),quantity:cart[id].q,installation:cart[id].i}})};
+ try{
+  const token=localStorage.getItem('token');
+  const res=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:JSON.stringify(order)});
+  if(!res.ok)throw new Error('El servidor no aceptó el pedido');
+  const data=await res.json();order.reference=data.order?.reference||data.reference||order.reference;order.status=data.order?.status||data.status||'pendiente_de_confirmacion';order.savedOnServer=true;
+ }catch(err){
+  const pending=readJSON(ORDER_KEY,[]);pending.push(order);localStorage.setItem(ORDER_KEY,JSON.stringify(pending));order.savedOnServer=false;
+ }
+ window._o=order;cart={};saveCart();step=5;rHome();rCart();
+}
+function conf(v){const o=window._o;if(!o){step=0;rCart();return}v.innerHTML=`<div class="box" style="max-width:620px;margin:auto;text-align:center"><div class="ok-i">✓</div><h2>Solicitud de pedido registrada</h2><p class="mu">Referencia</p><p style="font:800 30px var(--hf);margin:0 0 14px">#${safe(o.reference)}</p><p class="mu">${o.savedOnServer?'El servidor recibió tu solicitud.':'Esta solicitud solo quedó guardada en este navegador; todavía no llegó a la tienda.'}</p><div style="text-align:left"><table>${o.items.map(i=>`<tr><td style="width:auto">${safe(i.name)} × ${i.quantity}</td><td style="text-align:right">${fmt(i.unitPrice*i.quantity)}</td></tr>`).join('')}<tr><td>Cliente</td><td style="text-align:right">${safe(o.customer.n)}</td></tr><tr><td>Entrega en</td><td style="text-align:right">${safe(o.municipality)}</td></tr><tr><td>Pago preferido</td><td style="text-align:right">${o.payment==='delivery'?'Al recibir':'Transferencia'}</td></tr><tr><td><b>Total estimado</b></td><td style="text-align:right"><b>${fmt(o.totals.tot)}</b></td></tr></table></div><p class="mu">No se ha realizado ningún cobro. ${o.savedOnServer?'La tienda debe confirmar disponibilidad y pago.':'Para recibir pedidos reales, conecta el endpoint /api/orders a tu backend.'}</p><button class="btn" onclick="step=0;go('home')">Seguir comprando</button></div>`}
+
+/* FUNCIONES DE INICIO DE SESIÓN CON LA BASE DE DATOS DE NEON */
+function openLoginModal(){
+    $('md').innerHTML=`<button class="x" onclick="closeM()" aria-label="Cerrar">×</button>
+    <h2 style="margin-bottom:16px"><i class="bi bi-shield-lock"></i> Iniciar Sesión - Escudo 360</h2>
+    <div id="login-error" class="alert" style="color:var(--rd);margin-bottom:10px;font-weight:600"></div>
+    <form onsubmit="handleLogin(event)">
+        <label>Nombre de usuario</label>
+        <input id="login-user" required placeholder="Ej. Ricardo, Gregorio, Ariel, Miriam">
+        <label>Contraseña</label>
+        <input type="password" id="login-pass" required placeholder="Tu contraseña">
+        <p style="margin-top:20px"><button class="btn" style="width:100%">Entrar al sistema</button></p>
+    </form>`;
+    $('ov').classList.add('on');
+}
+
+async function handleLogin(e){
+    e.preventDefault();
+    const name = $('login-user').value.trim();
+    const password = $('login-pass').value;
+    const errBox = $('login-error');
+    errBox.textContent = '';
+
+    try {
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, password })
+        });
+        const data = await res.json();
+        if(res.ok){
+            currentUser = data.user;
+            localStorage.setItem('token', data.token);
+            updateUserInterface();
+            closeM();
+            toast('¡Bienvenido, ' + currentUser.name + '!');
+        } else {
+            errBox.textContent = data.error || 'Credenciales inválidas';
+        }
+    } catch(err){
+        console.error(err);
+        errBox.textContent = 'Error de conexión con el servidor backend.';
+    }
+}
+
+function updateUserInterface(){
+    if(currentUser){
+        $('lbl-username').textContent = currentUser.name;
+        $('user-info').classList.remove('oculto');
+        $('btn-open-login').classList.add('oculto');
+    } else {
+        $('user-info').classList.add('oculto');
+        $('btn-open-login').classList.remove('oculto');
+    }
+}
+
+function logout(){
+    currentUser = null;
+    localStorage.removeItem('token');
+    updateUserInterface();
+    toast('Sesión cerrada correctamente');
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+(function(){let s=6*3600+42*60+9;setInterval(()=>{s--;const h=Math.floor(s/3600),m=Math.floor(s%3600/60);$('cd').textContent=`Terminan en ${h} h ${m} min ${s%60} s`},1000)})();
+// Limpia productos inexistentes o cantidades fuera de inventario al restaurar el carrito.
+for(const id of Object.keys(cart)){const p=P.find(x=>x.id===Number(id));if(!p||!cart[id]||!Number.isInteger(cart[id].q)||cart[id].q<1)delete cart[id];else cart[id].q=Math.min(cart[id].q,p.s)}
+saveCart();
+updateUserInterface();
+rHome();
+</script>
+</body>
+</html>
