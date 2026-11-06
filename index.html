@@ -61,7 +61,7 @@ section{padding:36px 0}
 .row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
 .row .card{min-width:235px;scroll-snap-align:start}
 .card{background:var(--sf);border:1px solid var(--ln);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;position:relative}
-.card .im{background:linear-gradient(160deg,#DCE6F0,#C3D2E2);aspect-ratio:4/3;display:grid;place-items:center;cursor:pointer;border:0;width:100%}
+.card .im{background:linear-gradient(160deg,#DCE6F0,#C3D2E2);aspect-ratio:4/3;display:grid;place-items:center;cursor:pointer;border:0;width:100%;overflow:hidden}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .card .im{background:linear-gradient(160deg,#1C2E42,#14202E)}}
 .card .bd{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card h3{font-size:15px;font-weight:700;cursor:pointer}
@@ -91,7 +91,7 @@ td:first-child{color:var(--mu);width:45%}
 .cl{display:grid;grid-template-columns:2fr 1fr;gap:22px;align-items:start}
 .box{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:18px}
 .it{display:grid;grid-template-columns:84px 1fr auto;gap:14px;padding:14px 0;border-bottom:1px solid var(--ln);align-items:center}
-.it .th{background:#DCE6F0;border-radius:8px;display:grid;place-items:center;aspect-ratio:1}
+.it .th{background:#DCE6F0;border-radius:8px;display:grid;place-items:center;aspect-ratio:1;overflow:hidden}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .it .th{background:#1C2E42}}
 .qty{display:inline-flex;border:1.5px solid var(--ln);border-radius:8px;overflow:hidden}
 .qty button{background:none;border:0;width:34px;font-size:18px}
@@ -210,16 +210,16 @@ footer{background:var(--nv);color:#C5D3E2;padding:28px 0 90px;font-size:14px}
 <script>
 const CATS=['Kits Residenciales','Cámaras IP','DVR/NVR','Control de Acceso'];
 const P=[
-{id:1,n:'Kit de Videovigilancia 4 Cámaras 1080p',c:0,t:'kit',l:4999,d:15,s:14,r:'1080p Full HD',a:'Disco duro hasta 4 TB',v:'20 m IR',h:1,b:1},
-{id:2,n:'Kit de Videovigilancia 8 Cámaras 2 MP',c:0,t:'kit',l:8490,d:15,s:6,r:'2 MP (1080p)',a:'Disco duro hasta 6 TB',v:'30 m IR',b:1},
-{id:3,n:'Kit Residencial 2 Cámaras Exterior',c:0,t:'kit',l:2890,d:15,s:3,r:'1080p Full HD',a:'Disco duro hasta 2 TB',v:'20 m IR',h:1},
-{id:4,n:'Cámara IP Bullet 4 MP PoE',c:1,t:'bul',l:1850,d:10,s:22,r:'4 MP (2560×1440)',a:'MicroSD hasta 256 GB',v:'40 m IR, color nocturno',b:1},
-{id:5,n:'Cámara IP Domo 2 MP Antivandálica',c:1,t:'dom',l:1390,d:0,s:18,r:'2 MP (1080p)',a:'MicroSD hasta 128 GB',v:'30 m IR'},
-{id:6,n:'Cámara PTZ 4 MP Zoom 25x',c:1,t:'dom',l:9800,d:12,s:2,r:'4 MP',a:'MicroSD hasta 256 GB',v:'150 m IR',h:1},
-{id:7,n:'DVR 8 Canales 5 en 1 1080p',c:2,t:'dvr',l:2150,d:0,s:9,r:'Hasta 1080p',a:'1 disco hasta 10 TB',v:'Según cámara'},
-{id:8,n:'NVR 16 Canales PoE 4K',c:2,t:'dvr',l:6450,d:15,s:5,r:'Hasta 8 MP / 4K',a:'2 discos hasta 20 TB',v:'Según cámara',b:1},
-{id:9,n:'Control de Acceso Biométrico Huella + Tarjeta',c:3,t:'acc',l:3290,d:10,s:11,r:'3,000 huellas',a:'Memoria interna 100,000 eventos',v:'No aplica',b:1},
-{id:10,n:'Lector RFID Autónomo con Teclado',c:3,t:'acc',l:1190,d:0,s:25,r:'2,000 usuarios',a:'Memoria interna',v:'No aplica'}];
+{id:1,n:'Kit de Videovigilancia 4 Cámaras 1080p',c:0,t:'kit',l:4999,d:15,s:14,r:'1080p Full HD',a:'Disco duro hasta 4 TB',v:'20 m IR',h:1,b:1,img:"https://i5-mx.walmartimages.com/asr/dc763014-64a7-4772-add4-6dece73db627.9218f9c31fcd7eddf146a5d86250f510.png"},
+{id:2,n:'Kit de Videovigilancia 8 Cámaras 2 MP',c:0,t:'kit',l:8490,d:15,s:6,r:'2 MP (1080p)',a:'Disco duro hasta 6 TB',v:'30 m IR',b:1, img:"https://http2.mlstatic.com/D_NQ_NP_2X_774940-CBT83460315551_042025-F-kit-circuito-cerrado-8-camaras-seguridad-audio-exterior-1tb.webp"},
+{id:3,n:'Kit Residencial 2 Cámaras Exterior',c:0,t:'kit',l:2890,d:15,s:3,r:'1080p Full HD',a:'Disco duro hasta 2 TB',v:'20 m IR',h:1,img:"https://mx.annke.com/cdn/shop/files/DT41BE_CT1FG_2.webp?v=1761096087"},
+{id:4,n:'Cámara IP Bullet 4 MP PoE',c:1,t:'bul',l:1850,d:10,s:22,r:'4 MP (2560×1440)',a:'MicroSD hasta 256 GB',v:'40 m IR, color nocturno',b:1, img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_xPvLwajDYyrB4lK3D6V5mxgIJKVW6qY3CtqJTEOcyA&s"},
+{id:5,n:'Cámara IP Domo 2 MP Antivandálica',c:1,t:'dom',l:1390,d:0,s:18,r:'2 MP (1080p)',a:'MicroSD hasta 128 GB',v:'30 m IR', img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6gwpiClZtQOi1B5kCGMfFsFizHag5khMk3H5Rn6yQkg&s"},
+{id:6,n:'Cámara PTZ 4 MP Zoom 25x',c:1,t:'dom',l:9800,d:12,s:2,r:'4 MP',a:'MicroSD hasta 256 GB',v:'150 m IR',h:1, img:"https://http2.mlstatic.com/D_NQ_NP_957372-MLA96300529018_102025-O.webp"},
+{id:7,n:'DVR 8 Canales 5 en 1 1080p',c:2,t:'dvr',l:2150,d:0,s:9,r:'Hasta 1080p',a:'1 disco hasta 10 TB',v:'Según cámara', img:"https://http2.mlstatic.com/D_NQ_NP_2X_919797-MLM93735134715_092025-F.webp"},
+{id:8,n:'NVR 16 Canales PoE 4K',c:2,t:'dvr',l:6450,d:15,s:5,r:'Hasta 8 MP / 4K',a:'2 discos hasta 20 TB',v:'Según cámara',b:1, img:"https://www.ohwoai.net/cdn/shop/files/16_1024x1024.png?v=1751530342"},
+{id:9,n:'Control de Acceso Biométrico Huella + Tarjeta',c:3,t:'acc',l:3290,d:10,s:11,r:'3,000 huellas',a:'Memoria interna 100,000 eventos',v:'No aplica',b:1, img:"https://bsai.com.mx/cdn/shop/files/LECTOR-BIOMETRICO-DE-HUELLA-Y-TARJETAS-PARA-CONTROL-DE-ACCESO-Y-TIEMPO-Y-ASISTENCIA-CON-BATERIA-DE-RESPALDO-ZKTECO-30525142.PNG?v=1722212611&width=1000"},
+{id:10,n:'Lector RFID Autónomo con Teclado',c:3,t:'acc',l:1190,d:0,s:25,r:'2,000 usuarios',a:'Memoria interna',v:'No aplica', img:"https://sily.mx/cdn/shop/files/X7-AD-1-h.png?v=1778179147&width=1200"}];
 const REG={'Tlaxcala (capital)':99,'Chiautempan':109,'Zacatelco':119,'Apizaco':129,'Huamantla':149,'Calpulalpan':189,'Tlaxco':199};
 const INST=850, IVA=.16, fmt=n=>'$'+n.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
 const pr=p=>Math.round(p.l*(1-p.d/100));
@@ -239,6 +239,14 @@ dom:'<ellipse cx="60" cy="82" rx="38" ry="8" fill="#4C7DAF"/><path d="M26 80a34 
 dvr:'<rect x="14" y="52" width="92" height="32" rx="5" fill="#0B2540"/><rect x="22" y="62" width="40" height="5" rx="2" fill="#4C7DAF"/><circle cx="84" cy="68" r="4" fill="#12805C"/><circle cx="96" cy="68" r="4" fill="#F5A800"/>',
 acc:'<rect x="38" y="26" width="44" height="72" rx="8" fill="#0B2540"/><rect x="46" y="34" width="28" height="14" rx="3" fill="#4C7DAF"/><circle cx="60" cy="70" r="14" fill="none" stroke="#F5A800" stroke-width="3"/><circle cx="60" cy="70" r="6" fill="none" stroke="#F5A800" stroke-width="2"/>'}[t];
 return `<svg width="${w}" viewBox="0 0 120 120" aria-hidden="true">${g.replace(/#F5A800/g,'#6FA3E8')}</svg>`}
+
+function renderMedia(p, w = 120) {
+  if (p.img) {
+    return `<img src="${p.img}" alt="${p.n}" style="width:100%;height:100%;object-fit:cover;">`;
+  }
+  return art(p.t, w);
+}
+
 function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._);t._=setTimeout(()=>t.style.display='none',2200)}
 function scrollToId(id){go('home');setTimeout(()=>$(id).scrollIntoView(),30)}
 function go(v){
@@ -249,16 +257,18 @@ function go(v){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function openCart(){
-  // El botón superior siempre abre la primera pantalla del carrito.
   step = 0;
   go('cart');
 }
-function card(p,deal){const hi=cart[p.id];return `<article class="card ${deal?'deal':''}">${p.d?`<span class="tag">−${p.d} %</span>`:''}
-<button class="im" onclick="detail(${p.id})" aria-label="Ver ficha de ${p.n}">${art(p.t)}</button>
+function card(p,deal){
+  const hi=cart[p.id];
+  return `<article class="card ${deal?'deal':''}">${p.d?`<span class="tag">−${p.d} %</span>`:''}
+<button class="im" onclick="detail(${p.id})" aria-label="Ver ficha de ${p.n}">${renderMedia(p, 120)}</button>
 <div class="bd"><h3 onclick="detail(${p.id})">${p.n}</h3>
 <span class="stk ${p.s<5?'lo':''}">${p.s<5?'Últimas '+p.s+' piezas':'Disponible en almacén'}</span>
 <div class="pr"><b>${fmt(pr(p))}</b>${p.d?`<s>${fmt(p.l)}</s>`:''}</div>
-<button class="btn" onclick="add(${p.id})">Agregar al carrito</button></div></article>`}
+<button class="btn" onclick="add(${p.id})">Agregar al carrito</button></div></article>`;
+}
 function rHome(){
  $('nav').innerHTML=`<button class="${cat<0?'on':''}" onclick="filt(-1)">Todo</button>`+CATS.map((c,i)=>`<button class="${cat===i?'on':''}" onclick="filt(${i});scrollToId('cat')">${c}</button>`).join('');
  $('chips').innerHTML=['Todo',...CATS].map((c,i)=>`<button class="chip ${cat===i-1?'on':''}" onclick="filt(${i-1})">${c}</button>`).join('');
@@ -272,7 +282,7 @@ function filt(c){cat=c;term='';$('q').value='';rHome()}
 function doSearch(){term=$('q').value.trim().toLowerCase();cat=-1;rHome();scrollToId('cat')}
 function add(id,inst){const p=P.find(x=>x.id===id);cart[id]=cart[id]||{q:0,i:false};if(cart[id].q>=p.s){toast('No hay más piezas disponibles');return}cart[id].q++;if(inst)cart[id].i=true;saveCart();rHome();toast('Agregado al carrito');closeM()}
 function detail(id){const p=P.find(x=>x.id===id);
- $('md').innerHTML=`<button class="x" onclick="closeM()" aria-label="Cerrar">×</button><div class="two"><div class="card" style="border-radius:12px"><div class="im" style="cursor:default">${art(p.t,200)}</div></div>
+ $('md').innerHTML=`<button class="x" onclick="closeM()" aria-label="Cerrar">×</button><div class="two"><div class="card" style="border-radius:12px"><div class="im" style="cursor:default">${renderMedia(p, 200)}</div></div>
 <div><span class="mu">${CATS[p.c]}</span><h2 style="margin:4px 0 10px">${p.n}</h2><span class="stk">Disponible en almacén (${p.s})</span>
 <div class="pr" style="margin:8px 0"><b style="font-size:28px">${fmt(pr(p))}</b>${p.d?`<s>${fmt(p.l)}</s><span class="pill">−${p.d} %</span>`:''}</div>
 <table><caption style="text-align:left;font-weight:700;padding-bottom:4px">Ficha técnica</caption><tr><td>Resolución</td><td>${p.r}</td></tr><tr><td>Almacenamiento compatible</td><td>${p.a}</td></tr><tr><td>Visión nocturna</td><td>${p.v}</td></tr><tr><td>Respaldo</td><td>Mayorista SYSCOM</td></tr></table>
@@ -305,7 +315,7 @@ function rCart(){
  const S=['Carrito','Dirección','Envío','Pago'];
  v.innerHTML=`<div class="steps">${S.map((s,i)=>`<div class="st ${i===step?'on':i<step?'ok':''}">${i<step?'✓ ':''}${s}</div>`).join('')}</div><div class="cl"><div class="box" id="main"></div><div>${totals()}</div></div>`;
  const m=$('main');
- if(step===0)m.innerHTML=ids.map(id=>{const p=P.find(x=>x.id==id),c=cart[id];if(!p)return '';return `<div class="it"><div class="th">${art(p.t,64)}</div><div><b>${p.n}</b><br><span class="mu">${fmt(pr(p))} c/u</span><br>
+ if(step===0)m.innerHTML=ids.map(id=>{const p=P.find(x=>x.id==id),c=cart[id];if(!p)return '';return `<div class="it"><div class="th">${renderMedia(p, 64)}</div><div><b>${p.n}</b><br><span class="mu">${fmt(pr(p))} c/u</span><br>
 <label style="display:inline-flex;gap:6px;align-items:center;font-weight:400;margin:6px 0 0"><input type="checkbox" style="width:auto" ${c.i?'checked':''} onchange="cart[${id}].i=this.checked;saveCart();rCart()">Instalación in situ (+${fmt(INST)})</label></div>
 <div style="text-align:right"><div class="qty"><button onclick="qty(${id},-1)" aria-label="Quitar uno">−</button><span>${c.q}</span><button onclick="qty(${id},1)" aria-label="Agregar uno">+</button></div><div style="margin:8px 0"><b>${fmt(pr(p)*c.q)}</b></div><button class="lk" onclick="del(${id})">Eliminar</button></div></div>`}).join('')+`<p style="text-align:right"><button class="btn" onclick="step=1;rCart()">Continuar con la dirección</button></p>`;
  if(step===1)m.innerHTML=`<h3>Dirección de entrega</h3><form onsubmit="event.preventDefault();collectAddress();step=2;rCart()"><label>Nombre completo</label><input id="a-name" required autocomplete="name" value="${safe(addr.n||(currentUser?currentUser.name:''))}"><div class="f2"><div><label>Calle y número</label><input id="a-street" required autocomplete="street-address" value="${safe(addr.c||'')}"></div><div><label>Colonia</label><input id="a-neighborhood" required value="${safe(addr.col||'')}"></div></div><div class="f2"><div><label>Municipio</label><input value="${safe(reg)}" readonly></div><div><label>Código postal</label><input id="a-zip" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="90000" value="${safe(addr.zip||'')}"></div></div><label>Teléfono</label><input id="a-phone" type="tel" required autocomplete="tel" pattern="[0-9 +()-]{10,18}" value="${safe(addr.phone||'')}"><label>Correo electrónico</label><input id="a-email" type="email" required autocomplete="email" value="${safe(addr.email||'')}"><p><button type="button" class="btn s" onclick="step=0;rCart()">Volver</button> <button class="btn">Continuar al envío</button></p></form>`;
