@@ -21,30 +21,69 @@ const JWT_SECRET = process.env.JWT_SECRET || 'escudo360_clave_secreta';
 // 1. RUTAS DE AUTENTICACIÓN
 // ==========================================
 
-// INICIO DE SESIÓN (LOGIN POR NOMBRE DE USUARIO)
+// RUTA DE REGISTRO DE USUARIOS
+app.post('/api/auth/register', async (req, res) => {
+    const { name, email, password, acceptsPromotions } = req.body;
+
+    if (!name || !email || !password) {
+        return res.status(400).json({ error: 'Todos los campos obligatorios deben ser completados.' });
+    }
+
+    try {
+        const existingUsers = await sql`SELECT * FROM users WHERE name = ${name} OR email = ${email}`;
+        if (existingUsers.length > 0) {
+            return res.status(400).json({ error: 'El nombre de usuario o correo ya está registrado.' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await sql`
+            INSERT INTO users (name, email, password, accepts_promotions)
+            VALUES (${name}, ${email}, ${hashedPassword}, ${acceptsPromotions || false})
+            RETURNING id, name, email;
+        `;
+
+        const token = jwt.sign(
+            { id: newUser[0].id, name: newUser[0].name },
+            JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
+        res.status(201).json({
+            message: 'Usuario registrado con éxito',
+            token,
+            user: { id: newUser[0].id, name: newUser[0].name }
+        });
+    } catch (err) {
+        console.error('Error en registro:', err);
+        res.status(500).json({ error: 'Error interno al registrar el usuario.' });
+    }
+});
+
+// RUTA DE INICIO DE SESIÓN (LOGIN) <--- ¡ESTA RUTA FALTABA EN TU SERVER.JS!
 app.post('/api/auth/login', async (req, res) => {
     const { name, password } = req.body;
 
     if (!name || !password) {
-        return res.status(400).json({ error: 'Debes proporcionar usuario y contraseña' });
+        return res.status(400).json({ error: 'Por favor, ingresa el usuario y la contraseña.' });
     }
 
     try {
-        // Buscar usuario por nombre en la base de datos de Neon
+        // Buscar al usuario por su nombre en Neon PostgreSQL
         const users = await sql`SELECT * FROM users WHERE name = ${name}`;
         if (users.length === 0) {
-            return res.status(401).json({ error: 'Credenciales inválidas' });
+            return res.status(401).json({ error: 'Credenciales inválidas.' });
         }
 
         const user = users[0];
 
-        // Validar contraseña con bcrypt
+        // Comparar la contraseña ingresada con el hash cifrado almacenado (bcrypt)
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ error: 'Credenciales inválidas' });
+            return res.status(401).json({ error: 'Credenciales inválidas.' });
         }
 
-        // Generar Token JWT
+        // Generar el Token JWT de sesión
         const token = jwt.sign(
             { id: user.id, name: user.name },
             JWT_SECRET,
@@ -58,7 +97,7 @@ app.post('/api/auth/login', async (req, res) => {
         });
     } catch (err) {
         console.error('Error en login:', err);
-        res.status(500).json({ error: 'Error al iniciar sesión' });
+        res.status(500).json({ error: 'Error interno al iniciar sesión.' });
     }
 });
 
