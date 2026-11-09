@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// Conexión a Neon PostgreSQL
+// Conexión a Neon PostgreSQL (Usa la variable de entorno o la cadena directa como respaldo)
 const DATABASE_URL = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_wQ2SEdlgo4uK@ep-calm-bread-bdx2i20g-pooler.c-8.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
 const sql = neon(DATABASE_URL);
 
