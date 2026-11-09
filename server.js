@@ -49,6 +49,13 @@ app.post('/api/auth/register', async (req, res) => {
             { expiresIn: '8h' }
         );
 
+        // Guardar el token en la tabla refresh_tokens
+        const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000);
+        await sql`
+            INSERT INTO refresh_tokens (user_id, token, expires_at)
+            VALUES (${newUser[0].id}, ${token}, ${expiresAt})
+        `;
+
         res.status(201).json({
             message: 'Usuario registrado con éxito',
             token,
@@ -60,7 +67,52 @@ app.post('/api/auth/register', async (req, res) => {
     }
 });
 
-// RUTA DE INICIO DE SESIÓN (LOGIN) <--- ¡ESTA RUTA FALTABA EN TU SERVER.JS!
+// RUTA DE INICIO DE SESIÓN (LOGIN)
+app.post('/api/auth/login', async (req, res) => {
+    const { name, password } = req.body;
+
+    if (!name || !password) {
+        return res.status(400).json({ error: 'Por favor, ingresa el usuario y la contraseña.' });
+    }
+
+    try {
+        const users = await sql`SELECT * FROM users WHERE name = ${name}`;
+        if (users.length === 0) {
+            return res.status(401).json({ error: 'Credenciales inválidas.' });
+        }
+
+        const user = users[0];
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Credenciales inválidas.' });
+        }
+
+        const token = jwt.sign(
+            { id: user.id, name: user.name },
+            JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
+        // <-- AQUÍ ESTABA FALTANDO: Guardar el token en la tabla refresh_tokens de Neon
+        const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000);
+        await sql`
+            INSERT INTO refresh_tokens (user_id, token, expires_at)
+            VALUES (${user.id}, ${token}, ${expiresAt})
+        `;
+
+        res.json({
+            message: 'Inicio de sesión exitoso',
+            token,
+            user: { id: user.id, name: user.name }
+        });
+    } catch (err) {
+        console.error('Error en login:', err);
+        res.status(500).json({ error: 'Error interno al iniciar sesión.' });
+    }
+});
+
+// RUTA DE INICIO DE SESIÓN (LOGIN)
 app.post('/api/auth/login', async (req, res) => {
     const { name, password } = req.body;
 
