@@ -33,9 +33,9 @@ header{background:var(--nv);color:#fff;position:sticky;top:0;z-index:20}
 .auth-box{display:flex;align-items:center;gap:8px}
 .user-badge{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.25);padding:5px 12px;border-radius:8px;font-size:14px;display:flex;align-items:center;gap:8px;color:#fff;font-weight:600}
 .cartb{background:transparent;border:1.5px solid #fff5;color:#fff;border-radius:8px;padding:9px 14px;font-weight:600}
+.cartb.primary{background:var(--am);border-color:var(--am)}
 .cartb b{background:#fff;color:var(--nv);border-radius:99px;padding:1px 8px;margin-left:6px}
 
-/* Clase de utilidad estricta para ocultar */
 .oculto { display: none !important; }
 
 nav{background:var(--nv2)}
@@ -113,7 +113,6 @@ label{font-size:13px;font-weight:600;display:block;margin:10px 0 4px}
 .cc{display:flex;gap:8px;margin:6px 0}
 .cc i{font:italic 800 13px var(--hf);border-radius:5px;padding:3px 9px;color:#fff;font-style:normal}
 .ok-i{width:64px;height:64px;border-radius:50%;background:var(--gr);color:#fff;display:grid;place-items:center;font-size:34px;margin:0 auto 12px}
-/* faq */
 details{background:var(--sf);border:1px solid var(--ln);border-radius:10px;margin-bottom:8px;padding:14px 16px}
 summary{font-weight:600;cursor:pointer}
 details p{margin:10px 0 0;color:var(--mu)}
@@ -134,17 +133,19 @@ footer{background:var(--nv);color:#C5D3E2;padding:28px 0 90px;font-size:14px}
    Escudo <small>360</small></button>
   <form class="sr" onsubmit="event.preventDefault();doSearch()"><input id="q" placeholder="Buscar cámaras, kits, DVR, cerraduras…" aria-label="Buscar productos"><button>Buscar</button></form>
   
-  <!-- Control de Sesión -->
+  <!-- Control de Sesión y Registro -->
   <div class="auth-box">
       <div id="user-info" class="user-badge oculto">
           <i class="bi bi-person-fill text-warning"></i>
           <span>Hola, <strong id="lbl-username"></strong></span>
           <button class="btn s" style="padding:4px 10px;font-size:12px;border-color:rgba(255,255,255,0.6);color:#fff;" onclick="logout()">Salir</button>
       </div>
-      <button id="btn-open-login" class="cartb" onclick="openLoginModal()">Iniciar Sesión</button>
+      <div id="auth-buttons" style="display:flex;gap:6px">
+          <button id="btn-open-login" class="cartb" onclick="openLoginModal()">Iniciar Sesión</button>
+          <button id="btn-open-register" class="cartb primary" onclick="openRegisterModal()">Registrarse</button>
+      </div>
   </div>
 
-  <!-- Botón del Carrito de Ventas (Abre directamente la compra/checkout) -->
   <button class="cartb" id="btn-cart" type="button" onclick="openCart()" aria-controls="cart" aria-label="Abrir carrito de compras">Carrito <b id="cn" aria-live="polite">0</b></button>
  </div>
  <nav><div class="w" id="nav"></div></nav>
@@ -198,10 +199,9 @@ footer{background:var(--nv);color:#C5D3E2;padding:28px 0 90px;font-size:14px}
  </div></section>
 </main>
 
-<!-- Vista de Carrito y Pasarela de Compra -->
 <main id="cart" hidden><div class="w" style="padding-top:28px;padding-bottom:40px" id="cartv"></div></main>
 
-<footer><div class="w">Escudo 360 · Seguridad electrónica en Tlaxcala · Distribuidor autorizado SYSCOM · Catálogo demostrativo: los pedidos requieren backend y pasarela de pago para operar en producción.</div></footer>
+<footer><div class="w">Escudo 360 · Seguridad electrónica en Tlaxcala · Distribuidor autorizado SYSCOM · Catálogo demostrativo. Solo usuarios registrados pueden realizar pedidos en producción.</div></footer>
 
 <div class="wa"><span>¿Dudas con tu instalación? Chatea con un asesor</span><a href="#" onclick="event.preventDefault();toast('Abriendo WhatsApp…')" aria-label="Chatear por WhatsApp"><svg width="32" height="32" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.2 13.6c-.2.6-1.3 1.1-1.8 1.2-.5.1-1 .1-3.3-.8-2.7-1.2-4.4-3.9-4.6-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.300 1.700 2.100 1.100 1 2 1.300 2.300 1.400.3.100.4.1.6-.1l.8-1c.2-.2.400-.2.600-.1l1.900.9c.2.1.4.2.5.3.1.2.1.8-.1 1.400z"/></svg></a></div>
 <div class="toast" id="toast"></div>
@@ -256,17 +256,18 @@ function go(v){
   if(showCart) rCart();
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
 function openCart(){
-  // VALIDACIÓN: Si no hay usuario registrado con token, exigir inicio de sesión antes de abrir el carrito
   const token = localStorage.getItem('token');
   if(!token || !currentUser){
-    toast('Debes iniciar sesión con una cuenta registrada para ver el carrito y comprar');
+    toast('Debes iniciar sesión con una cuenta registrada para realizar compras');
     openLoginModal();
     return;
   }
   step = 0;
   go('cart');
 }
+
 function card(p,deal){
   const hi=cart[p.id];
   return `<article class="card ${deal?'deal':''}">${p.d?`<span class="tag">−${p.d} %</span>`:''}
@@ -276,6 +277,7 @@ function card(p,deal){
 <div class="pr"><b>${fmt(pr(p))}</b>${p.d?`<s>${fmt(p.l)}</s>`:''}</div>
 <button class="btn" onclick="add(${p.id})">Agregar al carrito</button></div></article>`;
 }
+
 function rHome(){
  $('nav').innerHTML=`<button class="${cat<0?'on':''}" onclick="filt(-1)">Todo</button>`+CATS.map((c,i)=>`<button class="${cat===i?'on':''}" onclick="filt(${i});scrollToId('cat')">${c}</button>`).join('');
  $('chips').innerHTML=['Todo',...CATS].map((c,i)=>`<button class="chip ${cat===i-1?'on':''}" onclick="filt(${i-1})">${c}</button>`).join('');
@@ -285,6 +287,7 @@ function rHome(){
  $('deals').innerHTML=P.filter(p=>p.d>=12).slice(0,4).map(p=>card(p,1)).join('');
  $('best').innerHTML=P.filter(p=>p.b).map(p=>card(p)).join('');
  $('cn').textContent=Object.values(cart).reduce((a,x)=>a+x.q,0)}
+
 function filt(c){cat=c;term='';$('q').value='';rHome()}
 function doSearch(){term=$('q').value.trim().toLowerCase();cat=-1;rHome();scrollToId('cat')}
 function add(id,inst){const p=P.find(x=>x.id===id);cart[id]=cart[id]||{q:0,i:false};if(cart[id].q>=p.s){toast('No hay más piezas disponibles');return}cart[id].q++;if(inst)cart[id].i=true;saveCart();rHome();toast('Agregado al carrito');closeM()}
@@ -305,7 +308,6 @@ function totals(){const t=calc();return `<div class="box"><h3 style="margin-bott
 <p class="mu" style="font-size:12px;margin-bottom:0">Los precios mostrados no incluyen IVA.</p></div>`}
 
 function rCart(){
- // Validación adicional de seguridad en renderizado de carrito
  const token=localStorage.getItem('token');
  if(!token || !currentUser){
    step=0;
@@ -335,7 +337,11 @@ function rCart(){
  if(step===0)m.innerHTML=ids.map(id=>{const p=P.find(x=>x.id==id),c=cart[id];if(!p)return '';return `<div class="it"><div class="th">${renderMedia(p, 64)}</div><div><b>${p.n}</b><br><span class="mu">${fmt(pr(p))} c/u</span><br>
 <label style="display:inline-flex;gap:6px;align-items:center;font-weight:400;margin:6px 0 0"><input type="checkbox" style="width:auto" ${c.i?'checked':''} onchange="cart[${id}].i=this.checked;saveCart();rCart()">Instalación in situ (+${fmt(INST)})</label></div>
 <div style="text-align:right"><div class="qty"><button onclick="qty(${id},-1)" aria-label="Quitar uno">−</button><span>${c.q}</span><button onclick="qty(${id},1)" aria-label="Agregar uno">+</button></div><div style="margin:8px 0"><b>${fmt(pr(p)*c.q)}</b></div><button class="lk" onclick="del(${id})">Eliminar</button></div></div>`}).join('')+`<p style="text-align:right"><button class="btn" onclick="step=1;rCart()">Continuar con la dirección</button></p>`;
- if(step===1)m.innerHTML=`<h3>Dirección de entrega</h3><form onsubmit="event.preventDefault();collectAddress();step=2;rCart()"><label>Nombre completo</label><input id="a-name" required autocomplete="name" value="${safe(addr.n||(currentUser?currentUser.name:''))}"><div class="f2"><div><label>Calle y número</label><input id="a-street" required autocomplete="street-address" value="${safe(addr.c||'')}"></div><div><label>Colonia</label><input id="a-neighborhood" required value="${safe(addr.col||'')}"></div></div><div class="f2"><div><label>Municipio</label><select id="a-municipality" onchange="reg=this.value;rCart()">${Object.keys(REG).map(r=>`<option ${r===reg?'selected':''}>${r}</option>`).join('')}</select></div><div><label>Código postal</label><input id="a-zip" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="90000" value="${safe(addr.zip||'')}"></div></div><label>Teléfono</label><input id="a-phone" type="tel" required autocomplete="tel" pattern="[0-9 +()-]{10,18}" value="${safe(addr.phone||'')}"><label>Correo electrónico</label><input id="a-email" type="email" required autocomplete="email" value="${safe(addr.email||'')}"><p><button type="button" class="btn s" onclick="step=0;rCart()">Volver</button> <button class="btn">Continuar al envío</button></p></form>`;
+ if(step===1){
+  // Si venimos entrando al paso 1 por primera vez desde el carrito, limpiamos los campos de texto de dirección para que aparezcan vacíos
+  if(!window._openedStep1){ addr={n:currentUser?currentUser.name:'',c:'',col:'',zip:'',phone:'',email:currentUser&&currentUser.email?currentUser.email:''}; window._openedStep1=true; }
+  m.innerHTML=`<h3>Dirección de entrega</h3><form onsubmit="event.preventDefault();collectAddress();window._openedStep1=false;step=2;rCart()"><label>Nombre completo</label><input id="a-name" required autocomplete="name" value="${safe(addr.n)}"><div class="f2"><div><label>Calle y número</label><input id="a-street" required autocomplete="street-address" placeholder="Ej. Calle Juárez #12" value="${safe(addr.c)}"></div><div><label>Colonia</label><input id="a-neighborhood" required placeholder="Ej. Centro" value="${safe(addr.col)}"></div></div><div class="f2"><div><label>Municipio</label><select id="a-municipality" onchange="collectAddress();reg=this.value;rCart()">${Object.keys(REG).map(r=>`<option ${r===reg?'selected':''}>${r}</option>`).join('')}</select></div><div><label>Código postal</label><input id="a-zip" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="90000" value="${safe(addr.zip)}"></div></div><label>Teléfono</label><input id="a-phone" type="tel" required autocomplete="tel" pattern="[0-9 +()-]{10,18}" placeholder="2412345678" value="${safe(addr.phone)}"><label>Correo electrónico</label><input id="a-email" type="email" required autocomplete="email" placeholder="correo@ejemplo.com" value="${safe(addr.email)}"><p><button type="button" class="btn s" onclick="window._openedStep1=false;step=0;rCart()">Volver</button> <button class="btn" onclick="window._openedStep1=false;">Continuar al envío</button></p></form>`;
+}
  if(step===2)m.innerHTML=`<h3>Método de envío</h3><label class="opt"><input type="radio" name="e" ${!expr?'checked':''} onchange="expr=false;rCart()"><span><b>Estándar</b> · 1 a 3 días hábiles<br><small class="mu">Tarifa según municipio</small></span></label><label class="opt"><input type="radio" name="e" ${expr?'checked':''} onchange="expr=true;rCart()"><span><b>Express</b> · siguiente día hábil <b>+$80.00</b></span></label><p><button class="btn s" onclick="step=1;rCart()">Volver</button> <button class="btn" onclick="step=3;rCart()">Continuar al pago</button></p>`;
  if(step===3)payv(m,S);
 }
@@ -344,15 +350,15 @@ function collectAddress(){addr={n:$('a-name').value.trim(),c:$('a-street').value
 function payv(m,S){
  document.querySelectorAll('.st').forEach((e,i)=>{e.className='st '+(i<3?'ok':'on');e.textContent=i<3?'✓ '+S[i]:S[i]});
  const methods=[['delivery','Pago al recibir'],['transfer','Transferencia bancaria']];
- m.innerHTML=`<h3>Forma de pago preferida</h3><p class="mu">Elige cómo te gustaría pagar. El pedido quedará pendiente de confirmación; esta página todavía no procesa cobros.</p><div class="pm">${methods.map(([k,l])=>`<button class="chip ${pay===k?'on':''}" onclick="pay='${k}';payv($('main'),${JSON.stringify(S).replace(/"/g,"'")})">${l}</button>`).join('')}</div><div class="box" style="background:var(--bg);margin-top:12px"><b>${pay==='delivery'?'Pago al recibir':'Transferencia bancaria'}</b><p class="mu">${pay==='delivery'?'El asesor confirmará disponibilidad, costo final y forma de pago al recibir.':'Un asesor te compartirá los datos bancarios oficiales después de revisar tu pedido. No transfieras a cuentas mostradas fuera de los canales oficiales.'}</p></div><p style="margin-top:16px"><button class="btn s" onclick="step=2;rCart()">Volver</button> <button class="btn" onclick="confirmar()">Enviar solicitud de pedido</button></p>`;
+ m.innerHTML=`<h3>Forma de pago preferida</h3><p class="mu">Elige cómo te gustaría pagar. El pedido quedará pendiente de confirmación.</p><div class="pm">${methods.map(([k,l])=>`<button class="chip ${pay===k?'on':''}" onclick="pay='${k}';payv($('main'),${JSON.stringify(S).replace(/"/g,"'")})">${l}</button>`).join('')}</div><div class="box" style="background:var(--bg);margin-top:12px"><b>${pay==='delivery'?'Pago al recibir':'Transferencia bancaria'}</b><p class="mu">${pay==='delivery'?'El asesor confirmará disponibilidad, costo final y forma de pago al recibir.':'Un asesor te compartirá los datos bancarios oficiales después de revisar tu pedido.'}</p></div><p style="margin-top:16px"><button class="btn s" onclick="step=2;rCart()">Volver</button> <button class="btn" onclick="confirmar()">Enviar solicitud de pedido</button></p>`;
 }
 function qty(id,d){const p=P.find(x=>x.id===id);if(!p)return;const next=(cart[id]?.q||0)+d;if(next<=0)delete cart[id];else if(next>p.s){toast('Stock máximo disponible: '+p.s);return}else cart[id].q=next;saveCart();rHome();rCart()}
 function del(id){delete cart[id];saveCart();rHome();rCart()}
+
 async function confirmar(){
- // Validación estricta de token en base de datos antes de enviar pedido
  const token=localStorage.getItem('token');
  if(!token || !currentUser){
-   toast('Sesión no válida. Debes iniciar sesión con una cuenta registrada para confirmar el pedido.');
+   toast('Debes iniciar sesión con una cuenta registrada para confirmar la compra.');
    openLoginModal();
    return;
  }
@@ -370,20 +376,46 @@ async function confirmar(){
  }
  window._o=order;cart={};saveCart();step=5;rHome();rCart();
 }
+
 function conf(v){const o=window._o;if(!o){step=0;rCart();return}v.innerHTML=`<div class="box" style="max-width:620px;margin:auto;text-align:center"><div class="ok-i">✓</div><h2>Solicitud de pedido registrada</h2><p class="mu">Referencia</p><p style="font:800 30px var(--hf);margin:0 0 14px">#${safe(o.reference)}</p><p class="mu">${o.savedOnServer?'El servidor recibió tu solicitud.':'Esta solicitud solo quedó guardada en este navegador; todavía no llegó a la tienda.'}</p><div style="text-align:left"><table>${o.items.map(i=>`<tr><td style="width:auto">${safe(i.name)} × ${i.quantity}</td><td style="text-align:right">${fmt(i.unitPrice*i.quantity)}</td></tr>`).join('')}<tr><td>Cliente</td><td style="text-align:right">${safe(o.customer.n)}</td></tr><tr><td>Entrega en</td><td style="text-align:right">${safe(o.municipality)}</td></tr><tr><td>Pago preferido</td><td style="text-align:right">${o.payment==='delivery'?'Al recibir':'Transferencia'}</td></tr><tr><td><b>Total estimado</b></td><td style="text-align:right"><b>${fmt(o.totals.tot)}</b></td></tr></table></div><p class="mu">No se ha realizado ningún cobro. ${o.savedOnServer?'La tienda debe confirmar disponibilidad y pago.':'Para recibir pedidos reales, conecta el endpoint /api/orders a tu backend.'}</p><button class="btn" onclick="step=0;go('home')">Seguir comprando</button></div>`}
 
-/* FUNCIONES DE INICIO DE SESIÓN CON LA BASE DE DATOS DE NEON */
+/* FUNCIONES DE INICIO DE SESIÓN Y REGISTRO */
 function openLoginModal(){
     $('md').innerHTML=`<button class="x" onclick="closeM()" aria-label="Cerrar">×</button>
-    <h2 style="margin-bottom:16px"><i class="bi bi-shield-lock"></i> Iniciar Sesión - Escudo 360</h2>
-    <p class="mu" style="font-size:13px;margin-bottom:12px">Para realizar compras en la tienda, es obligatorio iniciar sesión con una cuenta registrada en la base de datos.</p>
+    <h2 style="margin-bottom:12px"><i class="bi bi-shield-lock"></i> Iniciar Sesión - Escudo 360</h2>
+    <p class="mu" style="font-size:13px;margin-bottom:12px">Es obligatorio iniciar sesión con una cuenta registrada para realizar compras.</p>
     <div id="login-error" class="alert" style="color:var(--rd);margin-bottom:10px;font-weight:600"></div>
     <form onsubmit="handleLogin(event)">
         <label>Nombre de usuario</label>
-        <input id="login-user" required placeholder="Ej. Ricardo, Gregorio, Ariel, Miriam">
+        <input id="login-user" required placeholder="Ej. Ricardo">
         <label>Contraseña</label>
         <input type="password" id="login-pass" required placeholder="Tu contraseña">
         <p style="margin-top:20px"><button class="btn" style="width:100%">Entrar al sistema</button></p>
+        <p class="mu" style="text-align:center;font-size:13px;margin-top:14px">¿No tienes cuenta? <a href="#" onclick="event.preventDefault();openRegisterModal()" style="color:var(--am);font-weight:600">Regístrate aquí</a></p>
+    </form>`;
+    $('ov').classList.add('on');
+}
+
+function openRegisterModal(){
+    $('md').innerHTML=`<button class="x" onclick="closeM()" aria-label="Cerrar">×</button>
+    <h2 style="margin-bottom:8px"><i class="bi bi-person-plus"></i> Crear Cuenta de Cliente</h2>
+    <p class="mu" style="font-size:13px;margin-bottom:12px">Regístrate para habilitar el carrito y realizar tus pedidos de seguridad electrónica.</p>
+    <div id="register-error" class="alert" style="color:var(--rd);margin-bottom:10px;font-weight:600"></div>
+    <form onsubmit="handleRegister(event)">
+        <label>Nombre de usuario</label>
+        <input id="reg-user" required placeholder="Ej. Ricardo">
+        <label>Correo electrónico</label>
+        <input type="email" id="reg-email" required placeholder="ejemplo@correo.com">
+        <label>Contraseña</label>
+        <input type="password" id="reg-pass" required placeholder="Crea una contraseña segura">
+        
+        <label class="chk" style="border-style:solid;border-width:1px;margin-top:14px">
+            <input type="checkbox" id="reg-promo" style="width:auto" checked>
+            <span style="font-size:13px">Deseo recibir correos con ofertas, promociones y nuevos productos de Escudo 360.</span>
+        </label>
+        
+        <p style="margin-top:20px"><button class="btn" style="width:100%">Crear cuenta y comenzar a comprar</button></p>
+        <p class="mu" style="text-align:center;font-size:13px;margin-top:14px">¿Ya tienes cuenta? <a href="#" onclick="event.preventDefault();openLoginModal()" style="color:var(--am);font-weight:600">Inicia sesión</a></p>
     </form>`;
     $('ov').classList.add('on');
 }
@@ -417,14 +449,45 @@ async function handleLogin(e){
     }
 }
 
+async function handleRegister(e){
+    e.preventDefault();
+    const name = $('reg-user').value.trim();
+    const email = $('reg-email').value.trim();
+    const password = $('reg-pass').value;
+    const acceptsPromotions = $('reg-promo').checked;
+    const errBox = $('register-error');
+    errBox.textContent = '';
+
+    try {
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password, acceptsPromotions })
+        });
+        const data = await res.json();
+        if(res.ok){
+            currentUser = data.user;
+            localStorage.setItem('token', data.token);
+            updateUserInterface();
+            closeM();
+            toast('¡Registro exitoso! Bienvenido, ' + currentUser.name);
+        } else {
+            errBox.textContent = data.error || 'No se pudo completar el registro';
+        }
+    } catch(err){
+        console.error(err);
+        errBox.textContent = 'Error de conexión con el servidor backend.';
+    }
+}
+
 function updateUserInterface(){
     if(currentUser){
         $('lbl-username').textContent = currentUser.name;
         $('user-info').classList.remove('oculto');
-        $('btn-open-login').classList.add('oculto');
+        $('auth-buttons').classList.add('oculto');
     } else {
         $('user-info').classList.add('oculto');
-        $('btn-open-login').classList.remove('oculto');
+        $('auth-buttons').classList.remove('oculto');
     }
 }
 
@@ -438,7 +501,6 @@ function logout(){
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
 (function(){let s=6*3600+42*60+9;setInterval(()=>{s--;const h=Math.floor(s/3600),m=Math.floor(s%3600/60);$('cd').textContent=`Terminan en ${h} h ${m} min ${s%60} s`},1000)})();
-// Limpia productos inexistentes o cantidades fuera de inventario al restaurar el carrito.
 for(const id of Object.keys(cart)){const p=P.find(x=>x.id===Number(id));if(!p||!cart[id]||!Number.isInteger(cart[id].q)||cart[id].q<1)delete cart[id];else cart[id].q=Math.min(cart[id].q,p.s)}
 saveCart();
 updateUserInterface();
