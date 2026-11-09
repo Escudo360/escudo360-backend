@@ -49,11 +49,15 @@ app.post('/api/auth/register', async (req, res) => {
             { expiresIn: '8h' }
         );
 
-        // Guardar el token en la tabla refresh_tokens
-        const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000);
+        // Guardar el token en la tabla refresh_tokens con hora ajustada a México
         await sql`
-            INSERT INTO refresh_tokens (user_id, token, expires_at)
-            VALUES (${newUser[0].id}, ${token}, ${expiresAt})
+            INSERT INTO refresh_tokens (user_id, token, expires_at, created_at)
+            VALUES (
+                ${newUser[0].id}, 
+                ${token}, 
+                (NOW() AT TIME ZONE 'America/Mexico_City') + INTERVAL '8 hours',
+                NOW() AT TIME ZONE 'America/Mexico_City'
+            )
         `;
 
         res.status(201).json({
@@ -94,53 +98,16 @@ app.post('/api/auth/login', async (req, res) => {
             { expiresIn: '8h' }
         );
 
-        // <-- AQUÍ ESTABA FALTANDO: Guardar el token en la tabla refresh_tokens de Neon
-        const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000);
+        // Guardar el token en la tabla refresh_tokens con hora ajustada a México
         await sql`
-            INSERT INTO refresh_tokens (user_id, token, expires_at)
-            VALUES (${user.id}, ${token}, ${expiresAt})
+            INSERT INTO refresh_tokens (user_id, token, expires_at, created_at)
+            VALUES (
+                ${user.id}, 
+                ${token}, 
+                (NOW() AT TIME ZONE 'America/Mexico_City') + INTERVAL '8 hours',
+                NOW() AT TIME ZONE 'America/Mexico_City'
+            )
         `;
-
-        res.json({
-            message: 'Inicio de sesión exitoso',
-            token,
-            user: { id: user.id, name: user.name }
-        });
-    } catch (err) {
-        console.error('Error en login:', err);
-        res.status(500).json({ error: 'Error interno al iniciar sesión.' });
-    }
-});
-
-// RUTA DE INICIO DE SESIÓN (LOGIN)
-app.post('/api/auth/login', async (req, res) => {
-    const { name, password } = req.body;
-
-    if (!name || !password) {
-        return res.status(400).json({ error: 'Por favor, ingresa el usuario y la contraseña.' });
-    }
-
-    try {
-        // Buscar al usuario por su nombre en Neon PostgreSQL
-        const users = await sql`SELECT * FROM users WHERE name = ${name}`;
-        if (users.length === 0) {
-            return res.status(401).json({ error: 'Credenciales inválidas.' });
-        }
-
-        const user = users[0];
-
-        // Comparar la contraseña ingresada con el hash cifrado almacenado (bcrypt)
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ error: 'Credenciales inválidas.' });
-        }
-
-        // Generar el Token JWT de sesión
-        const token = jwt.sign(
-            { id: user.id, name: user.name },
-            JWT_SECRET,
-            { expiresIn: '8h' }
-        );
 
         res.json({
             message: 'Inicio de sesión exitoso',
@@ -165,12 +132,11 @@ app.post('/api/orders', async (req, res) => {
 
     try {
         const reference = orderData.reference || 'ESC-' + Date.now().toString().slice(-8);
-        const status = 'pendiente_de_envio'; // Asignamos el estado solicitado
+        const status = 'pendiente_de_envio';
         
         const customer = orderData.customer || {};
         const totals = orderData.totals || {};
 
-        // Inserción en Neon PostgreSQL usando @neondatabase/serverless
         const result = await sql`
             INSERT INTO orders (
                 reference, status, customer_name, customer_street, 
